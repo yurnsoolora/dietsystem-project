@@ -83,6 +83,7 @@ public class MySQLMemberDao implements MemberDao {
         m.setHeight(rs.getInt("height"));
         m.setWeight(rs.getInt("weight"));
         m.setGender(rs.getString("gender").charAt(0));
+        m.setCreatedDate(rs.getDate("created_date"));
         
         return m;
       }

@@ -28,5 +28,6 @@ public class MemberDetailListener implements ActionListener {
     System.out.printf("키: %s\n", m.getHeight());
     System.out.printf("몸무게: %s\n", m.getWeight());
     System.out.printf("성별: %s\n", m.getGender() == 'M' ? "남성" : "여성");
+    System.out.printf("가입일: %s\n", m.getCreatedDate());
   }
 }

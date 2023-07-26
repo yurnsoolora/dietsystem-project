@@ -2,6 +2,7 @@ package bitcamp.myapp.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Board implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -9,36 +10,29 @@ public class Board implements Serializable {
   private int no;
   private String title;
   private String content;
-  private String writer;
+  private Member writer;
   private String password;
   private int viewCount;
   private Timestamp createdDate;
   private int category;
 
-  public Board() {}
-
-  public Board(int no) {
-    this.no = no;
+  @Override
+  public int hashCode() {
+    return Objects.hash(no);
   }
-
+  
+  @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
+    if (this == obj)
+      return true;
+    if (obj == null)
       return false;
-    }
-
-    if (this.getClass() != obj.getClass()) {
+    if (getClass() != obj.getClass())
       return false;
-    }
-
-    Board b = (Board) obj;
-
-    if (this.getNo() != b.getNo()) {
-      return false;
-    }
-
-    return true;
+    Board other = (Board) obj;
+    return no == other.no;
   }
-
+  
   public int getNo() {
     return no;
   }
@@ -57,11 +51,16 @@ public class Board implements Serializable {
   public void setContent(String content) {
     this.content = content;
   }
-  public String getWriter() {
+  public Member getWriter() { 
     return writer;
+    //member객체 반환
+    //writer = member의 새로운 이름!
+    //객체의 이름을 writer로 설정하여 작성자의 정보를 담고 있다는것을 표현
   }
-  public void setWriter(String writer) {
-    this.writer = writer;
+  public void setWriter(Member writer) { 
+	  this.writer = writer;
+	//반환된 작성자 정보 설정
+	//이제부터 board객체는 member객체의 인스턴스들을 사용하거나 조작할 수 있다. 
   }
   public int getViewCount() {
     return viewCount;
@@ -81,10 +80,5 @@ public class Board implements Serializable {
   public void setPassword(String password) {
     this.password = password;
   }
-  public int getCategory() {
-    return category;
-  }
-  public void setCategory(int category) {
-    this.category = category;
-  }
+  
 }
