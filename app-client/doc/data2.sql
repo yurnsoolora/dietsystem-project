@@ -1,28 +1,28 @@
 -- myapp_member 테이블 예제 데이터
-insert into myapp_member(member_no, name, age, height, weight, gender, password) 
-  values(1, 'aaa', '24', '164', '55', 'W', '1111');
-insert into myapp_member(member_no, name, age, height, weight, gender, password) 
-  values(2, 'bbb', '25', '170', '45', 'M', '1111');
-insert into myapp_member(member_no, name, age, height, weight, gender, password) 
-  values(3, 'ccc', '30', '189', '78', 'W', '1111');
-insert into myapp_member(member_no, name, age, height, weight, gender, password) 
-  values(4, 'ddd', '14', '155', '49', 'M', '1111');
-insert into myapp_member(member_no, name, age, height, weight, gender, password) 
-  values(5, 'eee', '50', '160', '58', 'W', '1111');
-insert into myapp_member(member_no, name, age, height, weight, gender, password) 
-  values(6, 'fff', '45', '171', '66', 'M', '1111');
+insert into myapp_member(member_no, name, id, age, height, weight, gender, password) 
+  values(1, 'aaa', 'aaa111', '24', '164', '55', 'W', sha1('1111'));
+insert into myapp_member(member_no, name, id, age, height, weight, gender, password) 
+  values(2, 'bbb', 'bbb222', '27', '150', '30', 'M', sha1('1111'));
+insert into myapp_member(member_no, name, id, age, height, weight, gender, password) 
+  values(3, 'ccc', 'ccc333', '56', '179', '22', 'W', sha1('1111'));
+insert into myapp_member(member_no, name, id, age, height, weight, gender, password) 
+  values(4, 'ddd', 'ddd444', '15', '189', '26', 'M', sha1('1111'));
+insert into myapp_member(member_no, name, id, age, height, weight, gender, password) 
+  values(5, 'eee', 'eee555', '70', '145', '15', 'W', sha1('1111'));
+insert into myapp_member(member_no, name, id, age, height, weight, gender, password) 
+  values(6, 'fff', 'fff666', '44', '160', '45', 'M', sha1('1111'));
 
 
 -- myapp_board 테이블 예제 데이터
 insert into myapp_board(board_no, title, content, writer, password)
-  values(11, '아침', '바나나', '1', '1111');
+  values(11, '아침', '바나나', '1', sha1('1111'));
 insert into myapp_board(board_no, title, content, writer, password)
-  values(12, '점심', '닭가슴살', '1', '1111');
+  values(12, '점심', '닭가슴살', '1', sha1('1111'));
 insert into myapp_board(board_no, title, content, writer, password)
-  values(13, '저녁', '토마토', '3', '1111');
+  values(13, '저녁', '토마토', '3', sha1('1111'));
 insert into myapp_board(board_no, title, content, writer, password)
-  values(14, '아침', '식단도시락', '4', '1111');
+  values(14, '아침', '식단도시락', '4', sha1('1111'));
 insert into myapp_board(board_no, title, content, writer, password)
-  values(15, '점심', '바나나', '5', '1111');
+  values(15, '점심', '바나나', '5', sha1('1111'));
 insert into myapp_board(board_no, title, content, writer, password)
-  values(16, '저녁', '굶음', '5', '1111');
+  values(16, '저녁', '굶음', '6', sha1('1111'));

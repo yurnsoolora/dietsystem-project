@@ -17,13 +17,13 @@ public class MemberListListener implements ActionListener {
   @Override
   public void service(BreadcrumbPrompt prompt) {
     System.out.println("---------------------------------------");
-    System.out.println("번호, 이름, 나이, 키, 몸무게, 성별");
+    System.out.println("번호, 이름, 아이디, 나이, 키, 몸무게, 성별");
     System.out.println("---------------------------------------");
 
     List<Member> list = memberDao.list();
     for (Member m : list) {
-      System.out.printf("%d, %s, %d, %d, %d, %s\n",
-           m.getNo(), m.getName(), m.getAge(), m.getHeight(), m.getWeight(),
+      System.out.printf("%d, %s, %s, %d, %d, %d, %s\n",
+           m.getNo(), m.getName(), m.getId(), m.getAge(), m.getHeight(), m.getWeight(),
            m.getGender() == 'M' ? "남성" : "여성");
     }
   }

@@ -24,6 +24,7 @@ public class MemberDetailListener implements ActionListener {
     }
 
     System.out.printf("이름: %s\n", m.getName());
+    System.out.printf("아이디: %s\n", m.getId());
     System.out.printf("나이: %d\n", m.getAge());
     System.out.printf("키: %s\n", m.getHeight());
     System.out.printf("몸무게: %s\n", m.getWeight());

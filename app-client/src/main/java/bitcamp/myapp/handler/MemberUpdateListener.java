@@ -23,6 +23,7 @@ public class MemberUpdateListener implements MemberActionListener {
     }
 
     m.setName(prompt.inputString("이름(%s)? ", m.getName()));
+    m.setId(prompt.inputString("아이디(%s)? ", m.getId()));
     m.setAge(prompt.inputInt("나이(%d)? ", m.getAge()));
     m.setHeight(prompt.inputInt("키(%d)? ", m.getHeight()));
     m.setWeight(prompt.inputInt("몸무게(%d)? ", m.getWeight()));
