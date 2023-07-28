@@ -14,7 +14,6 @@ public class Board implements Serializable {
   private String password;
   private int viewCount;
   private Timestamp createdDate;
-  private int category;
 
   @Override
   public int hashCode() {

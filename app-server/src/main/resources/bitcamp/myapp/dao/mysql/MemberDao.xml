@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.myapp.dao.MemberDao">
+
+  <!-- 결과 레코드의 컬럼 값을 자바 객체에 어떻게 담을 것인지 설정한다. -->
+  <resultMap type="member" id="memberMap">
+    <id     column="member_no"       property="no"/>
+    <result column="name"          property="name"/>
+    <result column="id"          property="id"/>
+    <result column="age"          property="age"/>
+    <result column="height"          property="height"/>
+    <result column="weight"          property="weight"/>
+    <result column="gender"       property="gender"/>
+    <result column="password"     property="password"/>
+    <result column="created_date"   property="createdDate"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="member">
+    insert into myapp_member(name, id, age, height, weight, gender, password)
+    values(#{name},#{id},#{age},#{height},#{weight},#{gender},sha1(#{password}))
+  </insert>
+  
+  <select id="findAll" resultMap="memberMap">
+    select
+      member_no, 
+      name, 
+      id, 
+      age, 
+      height, 
+      weight, 
+      gender
+    from
+      myapp_member 
+    order by
+      name desc
+  </select>
+  
+  <select id="findBy" parameterType="int" resultMap="memberMap">
+    select
+      member_no, 
+      name, 
+      id, 
+      age, 
+      height, 
+      weight, 
+      gender, 
+      created_date
+    from
+      myapp_member
+    where
+      member_no=#{no}
+  </select>
+  
+  <select id="findByEmailAndPassword" parameterType="member" resultMap="memberMap">
+    select
+      member_no, 
+      name, 
+      id, 
+      age, 
+      height, 
+      weight, 
+      gender, 
+      created_date
+    from
+      myapp_member
+    where
+      id=#{id}
+      and password=sha1(#{password})
+  </select>
+  
+  <update id="update" parameterType="member">
+	  update myapp_member set
+	    name=#{name},
+	    id=#{id},
+      	age=#{age},
+      	height=#{height},
+      	weight=#{weight},
+      	gender=#{gender},
+	    password=sha1(#{password})
+	  where 
+	    member_no=#{no}
+  </update>
+  
+  <delete id="delete" parameterType="int">
+    delete from myapp_member
+    where 
+      member_no=#{no}
+  </delete>
+</mapper>
+
+
+
+
+
