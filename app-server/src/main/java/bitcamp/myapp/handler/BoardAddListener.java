@@ -27,14 +27,6 @@ public class BoardAddListener implements ActionListener {
 
     try {
       boardDao.insert(board);
-      //      Thread.sleep(5000);
-      //
-      //      boardDao.insert(board);
-      //      Thread.sleep(5000);
-      //
-      //      boardDao.insert(board);
-      //      Thread.sleep(5000);
-
       sqlSessionFactory.openSession(false).commit();
 
     } catch (Exception e) {
