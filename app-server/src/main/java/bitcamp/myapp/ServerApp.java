@@ -1,10 +1,20 @@
 package bitcamp.myapp;
 
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import org.apache.ibatis.session.SqlSessionFactory;
 import bitcamp.myapp.config.AppConfig;
 import bitcamp.util.ApplicationContext;
 import bitcamp.util.DispatcherServlet;
 import bitcamp.util.HttpServletRequest;
 import bitcamp.util.HttpServletResponse;
+import bitcamp.util.HttpSession;
+import bitcamp.util.SqlSessionFactoryProxy;
+import io.netty.handler.codec.http.cookie.Cookie;
+import io.netty.handler.codec.http.cookie.DefaultCookie;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
 import reactor.netty.NettyOutbound;
@@ -12,86 +22,135 @@ import reactor.netty.http.server.HttpServer;
 import reactor.netty.http.server.HttpServerRequest;
 import reactor.netty.http.server.HttpServerResponse;
 
-//Reactor Netty 사용하여 웹 서버 구현하기
-
-
-//ServerApp : 웹 서버 생성하고 실행하는 역할
-//ServerHandler : Netty를 기반으로 하는 웹 서버에서 클라이언트의 요청을 처리하는 핸들러 클래스
-//DispatcherServlet : 요청에 맞는 서블릿을 찾아서 실행
-
-// 1) ServerApp 클래스가 웹 서버를 생성 및 실행
-// 2) 클라이언트의 요청이 들어오면 ServerHandelr클래스가 요청을 처리
-// 3) DispatcherServlet 클래스가 처리된 클라이언트의 요청을 서블릿으로 전달하고 응답을 생성하여 클라이언트에게 반환
-
-
 public class ServerApp {
 
-	  ApplicationContext iocContainer;
-	  //iocContainer = 스프링 컨테이너, 애플리케이션 컨텍스트 관리
-	  DispatcherServlet dispatcherServlet;
-	  //dispatcherServlet 멤버 변수 선언
+  public static final String MYAPP_SESSION_ID = "myapp_session_id";
 
-	  int port;
-	  //포트번호
-	  
-	  public ServerApp(int port) throws Exception {
-	    this.port = port;
-	    iocContainer = new ApplicationContext(AppConfig.class);
-	    dispatcherServlet = new DispatcherServlet(iocContainer);
-	  }
+  ApplicationContext iocContainer;
+  DispatcherServlet dispatcherServlet;
+  Map<String,HttpSession> sessionMap = new HashMap<>();
 
-	  public void close() throws Exception {
+  int port;
 
-	  }
+  public ServerApp(int port) throws Exception {
+    this.port = port;
+    iocContainer = new ApplicationContext(AppConfig.class);
+    dispatcherServlet = new DispatcherServlet(iocContainer);
+  }
 
-	  public static void main(String[] args) throws Exception {
-	    ServerApp app = new ServerApp(8888);
-	    app.execute();
-	    app.close();
-	  }
+  public void close() throws Exception {
 
-	  public void execute() throws Exception { //execute = 웹 서버 생성 및 실행하는 메소드 
-		    DisposableServer server = HttpServer //Reactor Netty HTTP 서버 생성
-		        .create()
-		        .port(8888) //서버가 리스닝할 포트 번호 설정
-		        .handle((request, response) -> processRequest(request, response))
-		        .bindNow();
-		    System.out.println("서버 실행됨!");
+  }
 
-		    server.onDispose().block();
-		    System.out.println("서버 종료됨!");
-	  }
+  public static void main(String[] args) throws Exception {
+    ServerApp app = new ServerApp(8888);
+    app.execute();
+    app.close();
+  }
 
-	  private NettyOutbound processRequest(HttpServerRequest request, HttpServerResponse response) {
-	    try {
-	    	HttpServletRequest request2 = new HttpServletRequest(request);
-	        HttpServletResponse response2 = new HttpServletResponse(response);
-	    	//HttpServletRequest, HttpServletResponse 객체 생성
-	    	//server -> servlet 으로 가공해서 객체생성
-	    	//Reactor Netty 객체를 서블릿의 객체로 변환하여 서블릿을 실행할 수 있음
-	        
-	       
-	        dispatcherServlet.service(request2, response2);
-	        //서블릿 객체를 이용하여 dispatcherServlet의 service 메서드를 호출
-	    	
-	    	
-	        response.addHeader("Content-Type", response2.getContentType());
-	        //getContentType() 메서드를 이용하여 서블릿이 생성한 응답의 컨텐츠 타입(html,MIME등)을 얻어옴
-	        //얻어온 컨텐츠 타입을 HTTP 응답 프로토콜의 헤더에 추가
-	    	
-	    	return response.sendString(Mono.just(response2.getContent()));
-	    	//서블릿이 생성한 응답 데이터를 얻어옴
-	    	//얻어온 응답 데이터를 mono타입으로 변환
-	    	//mono데이터를 HTTP프로토콜에 맞춰 클라이언트로 전송
-	    	//서버가 처리한 결과를 클라이언트에게 반환함!
-	    	
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    	return response.sendString(Mono.just("Error!"));
-	    } finally {
-//	      SqlSessionFactoryProxy sqlSessionFactoryProxy =
-//	          (SqlSessionFactoryProxy) iocContainer.getBean(SqlSessionFactory.class);
-//	      sqlSessionFactoryProxy.clean();
-	    }
-	  }
-	}
+  public void execute() throws Exception {
+    DisposableServer server = HttpServer
+        .create()
+        .port(8888)
+        .handle((request, response) -> processRequest(request, response))
+        .bindNow();
+    System.out.println("서버 실행됨!");
+
+    server.onDispose().block();
+    System.out.println("서버 종료됨!");
+  }
+
+  private NettyOutbound processRequest(HttpServerRequest request, HttpServerResponse response) {
+
+    HttpServletRequest request2 = new HttpServletRequest(request);
+    HttpServletResponse response2 = new HttpServletResponse(response);
+
+    try {
+      // 클라이언트 세션 ID 알아내기
+      String sessionId = null;
+      boolean firstVisit = false;
+
+      // 클라이언트가 보낸 쿠키들 중에서 세션ID가 있는지 확인한다.
+      List<Cookie> cookies = request2.allCookies().get(MYAPP_SESSION_ID);
+      if (cookies != null) {
+        // 세션ID가 있으면 이 값을 가지고 클라이언트를 구분한다.
+        sessionId = cookies.get(0).value();
+      } else {
+        // 세션ID가 없으면 이 클라이언트를 구분하기 위해 새 세션ID를 발급한다.
+        sessionId = UUID.randomUUID().toString();
+        firstVisit = true;
+      }
+
+      // 세션ID로 클라이언트에게 배정된 HttpSession 객체를 찾는다.
+      HttpSession session = sessionMap.get(sessionId);
+      if (session == null) {
+        // 현재 클라이언트가 사용할 HttpSession 객체가 배정되지 않았다면, 새로 만든다.
+        session = new HttpSession(sessionId);
+
+        // 새로 만든 세션 객체를 세션ID를 사용하여 맵에 보관한다.
+        sessionMap.put(sessionId, session);
+      }
+
+      // 서블릿에서 HttpSession 보관소를 사용할 수 있도록 HttpServletRequest에 담아 둔다.
+      request2.setSession(session);
+
+      if (firstVisit) {
+        // 세션ID가 없는 클라이언트를 위해 새로 발급한 세션ID를 쿠키로 보낸다.
+        // 웹브라우저는 이 값을 내부 메모리에 저장할 것이다.
+        response.addCookie(new DefaultCookie(MYAPP_SESSION_ID, sessionId));
+      }
+
+      String servletPath = request2.getServletPath();
+
+      // favicon.ico 요청에 대한 응답
+      if (servletPath.equals("/favicon.ico")) {
+        response.addHeader("Content-Type", "image/vnd.microsoft.icon");
+        return response.sendFile(Path.of(ServerApp.class.getResource("/static/favicon.ico").toURI()));
+      }
+
+      // welcome 파일 또는 HTML 파일을 요청할 때
+      if (servletPath.endsWith("/") || servletPath.endsWith(".html")) {
+        String resourcePath = String.format("/static%s%s",
+            servletPath,
+            (servletPath.endsWith("/") ? "index.html" : ""));
+
+        response.addHeader("Content-Type", "text/html;charset=UTF-8");
+        return response.sendFile(Path.of(ServerApp.class.getResource(resourcePath).toURI()));
+      }
+
+      if (request.isFormUrlencoded()) {
+        // POST 방식으로 요청했다면,
+        return response.sendString(request.receive()
+            .aggregate()
+            .asString()
+            .map(body -> {
+              try {
+                request2.parseFormBody(body);
+                dispatcherServlet.service(request2, response2);
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
+              response.addHeader("Content-Type", response2.getContentType());
+              return response2.getContent();
+            }));
+
+      } else {
+        // GET 방식으로 요청했다면,
+        dispatcherServlet.service(request2, response2);
+        response.addHeader("Content-Type", response2.getContentType());
+        return response.sendString(Mono.just(response2.getContent()));
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return response.sendString(Mono.just(response2.getContent()));
+
+    } finally {
+      SqlSessionFactoryProxy sqlSessionFactoryProxy =
+          (SqlSessionFactoryProxy) iocContainer.getBean(SqlSessionFactory.class);
+      sqlSessionFactoryProxy.clean();
+    }
+
+  }
+
+}

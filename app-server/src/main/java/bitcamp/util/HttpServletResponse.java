@@ -29,8 +29,6 @@ import reactor.netty.http.server.WebsocketServerSpec;
 import reactor.netty.http.websocket.WebsocketInbound;
 import reactor.netty.http.websocket.WebsocketOutbound;
 
-//Reactor Netty의 HttpServerResponse 객체를 감싸고 있는 HttpServletResponse 클래스를 정의
-//클라이언트 응답생성, 응답콘텐츠타입관리, http응답헤더설정 등
 public class HttpServletResponse {
 
   HttpServerResponse original;

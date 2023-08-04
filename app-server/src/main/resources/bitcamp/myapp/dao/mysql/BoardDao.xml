@@ -38,7 +38,7 @@
       board_no desc
   </select>
   
-  <select id="findBy" parameterType="map" resultMap="boardMap">
+  <select id="findBy" parameterType="int" resultMap="boardMap">
     select
       b.board_no,
       b.title,
@@ -50,7 +50,7 @@
     from
       myapp_board b inner join myapp_member m on b.writer=m.member_no
     where
-      board_no=#{boardNo}
+      board_no=#{no}
   </select>
   
   <update id="update" parameterType="board">

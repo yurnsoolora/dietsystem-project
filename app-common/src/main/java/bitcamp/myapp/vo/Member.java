@@ -13,9 +13,9 @@ public class Member implements Serializable {
   private int no;
   private String name;
   private String id;
-  private int age;
-  private int height;
-  private int weight;
+  private String age;
+  private String height;
+  private String weight;
   private String password;
   private char gender;
   private Date createdDate;
@@ -54,27 +54,27 @@ public class Member implements Serializable {
     public void setId(String id) {
       this.id = id;
     }
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
-    public int getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public int getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
