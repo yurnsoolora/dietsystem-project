@@ -1,27 +1,25 @@
 package bitcamp.myapp.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import bitcamp.myapp.dao.BoardDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import bitcamp.myapp.vo.Board;
-import bitcamp.util.Component;
-import bitcamp.util.HttpServletRequest;
-import bitcamp.util.HttpServletResponse;
-import bitcamp.util.Servlet;
 
-@Component("/board/list")
-public class BoardListServlet implements Servlet {
+@WebServlet("/board/list")
+public class BoardListServlet extends HttpServlet {
 
-  BoardDao boardDao;
+  private static final long serialVersionUID = 1L;
   SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
-  public BoardListServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
-  }
-
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
 
 //    int category = Integer.parseInt(request.getParameter("category"));
 
@@ -36,27 +34,39 @@ public class BoardListServlet implements Servlet {
     out.println("<body>");
     out.println("<h1>게시글 목록</h1>");
     out.println("<div style='margin:5px;'>");
-    out.printf("<a href='/board/form'>새 글</a>\n");
+    out.printf("<a href='/diet/form.html'>새 글</a>\n");
     out.println("</div>");
     out.println("<table border='1'>");
     out.println("<thead>");
-    out.println("  <tr><th>번호</th> <th>제목</th> <th>작성자</th> <th>조회수</th> <th>등록일</th></tr>");
+    out.println("  <tr><th>번호</th> <th>시간</th> <th>식단</th> <th>작성자</th> <th>조회수</th> <th>등록일</th></tr>");
     out.println("</thead>");
 
-    List<Board> list = boardDao.findAll();
+    List<Board> list = InitServlet.boardDao.findAll();
 
     out.println("<tbody>");
     for (Board board : list) {
+    	char mealChar = board.getMeal();
+    	  String mealText = "";
+
+    	  if (mealChar == 'm') {
+    	    mealText = "아침";
+    	  } else if (mealChar == 'l') {
+    	    mealText = "점심";
+    	  } else if (mealChar == 'd') {
+    	    mealText = "저녁";
+    	  }
+    	  
       out.printf("<tr>"
-          + " <td>%d</td>"
           + " <td><a href='/board/detail?no=%d'>%s</a></td>"
           + " <td>%s</td>"
-          + " <td>%d</td>"
+          + " <td>%s</td>"
+          + " <td>%s</td>"
           + " <td>%s</td></tr>\n",
           board.getNo(),
-//          board.getCategory(),
           board.getNo(),
-          (board.getTitle().length() > 0 ? board.getTitle() : "제목없음"),
+          mealText,
+//          (board.getTitle().length() > 0 ? board.getTitle() : "제목없음"),
+          board.getDiet().getFood(),
           board.getWriter().getName(),
           board.getViewCount(),
           dateFormatter.format(board.getCreatedDate())

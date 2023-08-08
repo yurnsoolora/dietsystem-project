@@ -7,10 +7,15 @@
   <!-- 결과 레코드의 컬럼 값을 자바 객체에 어떻게 담을 것인지 설정한다. -->
   <resultMap type="board" id="boardMap">
     <id     column="board_no"       property="no"/>
-    <result column="title"          property="title"/>
-    <result column="content"        property="content"/>
+    <result column="meal"          property="meal"/>
+    <result column="diet"        property="diet"/>
     <result column="view_count"     property="viewCount"/>
     <result column="created_date"   property="createdDate"/>
+    
+    <association property="writer" javaType="food">
+      <id     column="food_no"    property="no"/>
+      <result column="food"         property="food"/>
+    </association>
     
     <association property="writer" javaType="member">
       <id     column="member_no"    property="no"/>
@@ -20,14 +25,14 @@
   </resultMap>
 
   <insert id="insert" parameterType="board">
-    insert into myapp_board(title,content,writer)
-    values(#{title},#{content},#{writer.no})
+    insert into myapp_board(meal,diet,writer)
+    values(#{meal},#{diet.no},#{writer.no})
   </insert>
   
   <select id="findAll" resultMap="boardMap">
     select
       b.board_no,
-      b.title,
+      b.meal,
       b.view_count,
       b.created_date,
       m.member_no,
@@ -41,25 +46,30 @@
   <select id="findBy" parameterType="int" resultMap="boardMap">
     select
       b.board_no,
-      b.title,
-      b.content,
+      b.meal,
+      b.diet,
       b.view_count,
       b.created_date,
       m.member_no,
-      m.name
+      m.name,
+      f.food_no,
+      f.food
     from
-      myapp_board b inner join myapp_member m on b.writer=m.member_no
+      myapp_board b 
+      inner join myapp_member m on b.writer=m.member_no
+      left join myapp_food f on b.diet=f.food_no
     where
-      board_no=#{no}
+      board_no=#{boardNo}
   </select>
   
   <update id="update" parameterType="board">
 	  update myapp_board set
-	    title=#{title},
-	    content=#{content}
+	    meal=#{meal},
+	    diet=#{diet}
 	  where 
 	    board_no=#{no}
 	    and writer=#{writer.no}
+	    and diet=#{diet.no}
   </update>
   
   <update id="updateCount" parameterType="board">
@@ -74,10 +84,6 @@
     where 
       board_no=#{no}
       and writer=#{writer.no}
+      and diet=#{diet.no}
   </delete>
 </mapper>
-
-
-
-
-

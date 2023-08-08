@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.myapp.dao.FoodDao">
+
+  <!-- 결과 레코드의 컬럼 값을 자바 객체에 어떻게 담을 것인지 설정한다. -->
+  <resultMap type="food" id="foodMap">
+    <id     column="food_no"       property="no"/>
+    <result column="food"          property="food"/>
+    <result column="calories"          property="calories"/>
+  </resultMap>
+  
+  <select id="findAll" resultMap="foodMap">
+    select
+      food_no, 
+      food, 
+      calories
+    from
+      myapp_food
+    order by
+      food_no asc
+  </select>
+  
+  <select id="findCaloriesByFoodNo" parameterType="int" resultMap="foodMap">
+     SELECT calories 
+     FROM myapp_food
+     WHERE food_no = #{no}
+  </select>
+</mapper>

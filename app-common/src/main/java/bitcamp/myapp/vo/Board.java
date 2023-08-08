@@ -8,8 +8,10 @@ public class Board implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private int no;
-  private String title;
-  private String content;
+  private char meal;
+//  private String food;
+//  private String content;
+  private Food diet;
   private Member writer;
   private String password;
   private int viewCount;
@@ -37,20 +39,33 @@ public class Board implements Serializable {
   }
   public void setNo(int no) {
     this.no = no;
+    
   }
-  public String getTitle() {
-    return title;
+  
+  public char getMeal() {
+      return meal;
   }
-  public void setTitle(String title) {
-    this.title = title;
+  public void setMeal (char meal) {
+      this.meal = meal;
   }
-  public String getContent() {
-    return content;
-  }
-  public void setContent(String content) {
-    this.content = content;
-  }
-  public Member getWriter() { 
+  
+//  public String getTitle() {
+//    return title;
+//  }
+//  public void setTitle(String title) {
+//    this.title = title;
+//  }
+//  
+  
+//  public String getContent() {
+//    return content;
+//  }
+//  public void setContent(String content) {
+//    this.content = content;
+//  }
+  
+
+public Member getWriter() { 
     return writer;
     //member객체 반환
     //writer = member의 새로운 이름!
@@ -61,9 +76,20 @@ public class Board implements Serializable {
 	//반환된 작성자 정보 설정
 	//이제부터 board객체는 member객체의 인스턴스들을 사용하거나 조작할 수 있다. 
   }
+  
+  //음식정보
+  public Food getDiet() {
+	  return diet;
+  }
+  
+  public void setDiet(Food diet) {
+	  this.diet = diet;
+  }
+  
   public int getViewCount() {
     return viewCount;
   }
+  
   public void setViewCount(int viewCount) {
     this.viewCount = viewCount;
   }

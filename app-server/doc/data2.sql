@@ -14,15 +14,28 @@ insert into myapp_member(member_no, name, id, age, height, weight, gender, passw
 
 
 -- myapp_board 테이블 예제 데이터
-insert into myapp_board(board_no, title, content, writer, password)
-  values(11, '아침', '바나나', '1', sha1('1111'));
-insert into myapp_board(board_no, title, content, writer, password)
-  values(12, '점심', '닭가슴살', '1', sha1('1111'));
-insert into myapp_board(board_no, title, content, writer, password)
-  values(13, '저녁', '토마토', '3', sha1('1111'));
-insert into myapp_board(board_no, title, content, writer, password)
-  values(14, '아침', '식단도시락', '4', sha1('1111'));
-insert into myapp_board(board_no, title, content, writer, password)
-  values(15, '점심', '바나나', '5', sha1('1111'));
-insert into myapp_board(board_no, title, content, writer, password)
-  values(16, '저녁', '굶음', '6', sha1('1111'));
+insert into myapp_board(board_no, meal, diet, writer, password)
+  values(11, 'm', '1', '1', sha1('1111'));
+insert into myapp_board(board_no, meal, diet, writer, password)
+  values(12, 'l', '2', '1', sha1('1111'));
+insert into myapp_board(board_no, meal, diet, writer, password)
+  values(13, 'd', '3', '3', sha1('1111'));
+insert into myapp_board(board_no, meal, diet, writer, password)
+  values(14, 'm', '4', '4', sha1('1111'));
+insert into myapp_board(board_no, meal, diet, writer, password)
+  values(15, 'l', '5', '5', sha1('1111'));
+insert into myapp_board(board_no, meal, diet, writer, password)
+  values(16, 'd', '2', '6', sha1('1111'));
+  
+-- myapp_food 테이블 예제 데이터
+insert into myapp_food(food_no, food, calories)
+  values(1, 'banana', 90);
+insert into myapp_food(food_no, food, calories)
+  values(2, 'egg', 70);
+insert into myapp_food(food_no, food, calories)
+  values(3, 'rice', 200);
+insert into myapp_food(food_no, food, calories)
+  values(4, 'potato', 120);
+insert into myapp_food(food_no, food, calories)
+  values(5, 'apple', 100);
+  
