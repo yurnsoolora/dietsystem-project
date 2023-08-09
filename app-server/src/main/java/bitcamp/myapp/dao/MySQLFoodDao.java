@@ -15,16 +15,23 @@ public class MySQLFoodDao implements FoodDao {
 	    this.sqlSessionFactory = sqlSessionFactory;
 	  }
 	  
-	@Override
-	public List<Food> findAll() {
-		SqlSession sqlSession = sqlSessionFactory.openSession(false);
-		 return sqlSession.selectList("bitcamp.myapp.dao.FoodDao.findAll");
-	}
-
-	@Override
-	public Food findCaloriesByFoodNo(int no) {
-		SqlSession sqlSession = sqlSessionFactory.openSession(false);
-		 return sqlSession.selectOne("bitcamp.myapp.dao.FoodDao.findCaloriesByFoodNo", no);
-	}
+	  @Override
+	  public List<Food> findAllFoods() {
+		  try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+		        return sqlSession.selectList("bitcamp.myapp.dao.FoodDao.findAllFoods");
+		    }
+	  }
+		  
+	  @Override
+	    public Food findFoodByNo(int no) { // 추가된 메서드
+	        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+	            return sqlSession.selectOne("bitcamp.myapp.dao.FoodDao.findFoodByNo", no);
+	        }
+	    }
+//	  @Override
+//	    public int findCaloriesByFoodName(String foodName) {
+//	        SqlSession sqlSession = sqlSessionFactory.openSession(false);
+//	        return sqlSession.selectOne("bitcamp.myapp.dao.FoodDao.findCaloriesByFoodName", foodName);
+//	    }
 
 }

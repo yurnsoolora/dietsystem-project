@@ -11,20 +11,13 @@
     <result column="calories"          property="calories"/>
   </resultMap>
   
-  <select id="findAll" resultMap="foodMap">
-    select
-      food_no, 
-      food, 
-      calories
-    from
-      myapp_food
-    order by
-      food_no asc
+<select id="findAllFoods" resultType="bitcamp.myapp.vo.Food">
+    SELECT * FROM myapp_food;
   </select>
   
-  <select id="findCaloriesByFoodNo" parameterType="int" resultMap="foodMap">
-     SELECT calories 
-     FROM myapp_food
-     WHERE food_no = #{no}
-  </select>
+<select id="findCaloriesByFood" parameterType="String" resultMap="foodMap">
+  SELECT calories 
+  FROM myapp_food
+  WHERE food = #{foodName}
+</select>
 </mapper>

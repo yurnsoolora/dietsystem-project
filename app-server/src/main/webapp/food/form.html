@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>비트캠프</title>
+</head>
+<body>
+<h1>칼로리 검색</h1>
+<form action='/calories/list' method="post">
+  <label for="foodNo">음식 선택:</label>
+  <select name="foodNo" id="foodNo">
+    <option value="1">바나나</option>
+    <option value="2">계란</option>
+    <option value="3">쌀밥</option>
+    <option value="4">감자</option>
+    <option value="5">사과</option>
+  </select>
+  <button type="submit">검색</button>
+  
+  <!-- hidden input 요소 추가 -->
+  <input type="hidden" name="calories" value="">
+</form>
+</body>
+</html>

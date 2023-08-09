@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import bitcamp.myapp.vo.Board;
+import bitcamp.myapp.vo.Food;
 import bitcamp.myapp.vo.Member;
 
 @WebServlet("/board/update")
@@ -24,15 +25,19 @@ public class BoardUpdateServlet extends HttpServlet {
       response.sendRedirect("/auth/form.html");
       return;
     }
+    
+//    Food diet = new Food();
+//    int foodNo = Integer.parseInt(request.getParameter("foodNo"));
+//    diet.setNo(foodNo);//이부분
 
 //    int category = Integer.parseInt(request.getParameter("category"));
 
     Board board = new Board();
     board.setNo(Integer.parseInt(request.getParameter("no")));
     board.setMeal(request.getParameter("time").charAt(0));
-    board.setDiet(Integer.parseInt((request.getParameter("diet")));
+//    board.setDiet(diet);
+    board.setContent(request.getParameter("content"));
     board.setWriter(loginUser);
-//    board.setCategory(category);
 
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();

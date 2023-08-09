@@ -10,12 +10,15 @@ public class Board implements Serializable {
   private int no;
   private char meal;
 //  private String food;
-//  private String content;
+  private String content;
   private Food diet;
   private Member writer;
   private String password;
   private int viewCount;
   private Timestamp createdDate;
+
+private int calories;
+//  private int foodNo;
 
   @Override
   public int hashCode() {
@@ -57,14 +60,29 @@ public class Board implements Serializable {
 //  }
 //  
   
-//  public String getContent() {
-//    return content;
-//  }
-//  public void setContent(String content) {
-//    this.content = content;
-//  }
+  public String getContent() {
+    return content;
+  }
+  public void setContent(String content) {
+    this.content = content;
+  }
   
+//  public int getFoodNo() {
+//	    return foodNo;
+//	  }
+//	  
+//  public void setFoodNo(int foodNo) {
+//    this.foodNo = foodNo;
+//  }
 
+  public Food getDiet() {
+	  return diet;
+  }
+  
+  public void setDiet(Food diet) {
+	  this.diet = diet;
+  }
+  
 public Member getWriter() { 
     return writer;
     //member객체 반환
@@ -77,14 +95,18 @@ public Member getWriter() {
 	//이제부터 board객체는 member객체의 인스턴스들을 사용하거나 조작할 수 있다. 
   }
   
-  //음식정보
-  public Food getDiet() {
-	  return diet;
+  public void setCalories(int calories) {
+      this.calories = calories;
   }
   
-  public void setDiet(Food diet) {
-	  this.diet = diet;
-  }
+  //음식정보
+//  public Food getDiet() {
+//	  return diet;
+//  }
+//  
+//  public void setDiet(Food diet) {
+//	  this.diet = diet;
+//  }
   
   public int getViewCount() {
     return viewCount;

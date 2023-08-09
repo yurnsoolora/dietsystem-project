@@ -19,7 +19,8 @@ public class Member implements Serializable {
   private String password;
   private char gender;
   private Date createdDate;
-
+  private float bmi; 
+  
   @Override
   public int hashCode() {
     return Objects.hash(no);
@@ -96,4 +97,15 @@ public class Member implements Serializable {
     public void setCreatedDate(Date createdDate) {
       this.createdDate = createdDate;
     }
+    
+    public float calculateBMI() {
+        float heightInMeter = height / 100.0f; // 키를 미터 단위로 변환
+        bmi = weight / (heightInMeter * heightInMeter);
+        return bmi;
+      }
+    
+    public float getBmi() {
+        return bmi;
+    }
+
 }

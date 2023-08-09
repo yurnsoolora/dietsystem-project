@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bitcamp.myapp.dao.FoodDao;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Food;
 
@@ -24,8 +25,6 @@ public class BoardDetailServlet extends HttpServlet {
 
     Board board = InitServlet.boardDao.findBy(
         Integer.parseInt(request.getParameter("no")));
-    
-    List<Food> foodList = InitServlet.foodDao.findAll();
 
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
@@ -55,13 +54,20 @@ public class BoardDetailServlet extends HttpServlet {
               (board.getMeal() == 'm' ? "selected" : ""),
               (board.getMeal() == 'l' ? "selected" : ""),
               (board.getMeal() == 'l' ? "selected" : ""));
-      out.println("<tr><th>식단</th>\n"
-              + "<td><select name='diet'>");
-	    for (Food food : foodList) {
-	        String selected = food.getFood().equals(board.getDiet().getFood()) ? "selected" : "";
-	        out.printf("<option value='%d' %s>%s</option>\n",
-	            food.getNo(), selected, food.getFood());
-	    }
+
+//      int foodNo = board.getDiet().getNo();
+      
+      FoodDao foodDao = InitServlet.foodDao;
+      List<Food> foodList = foodDao.findAllFoods();
+//      out.println("<tr><th>식단</th><td><select name='foodNo'>");
+//      for (Food food : foodList) {
+//          String selected = (food.getNo() == foodNo) ? "selected" : "";
+//          out.printf("<option value='%d' %s>%s</option>", food.getNo(), selected, food.getFood());
+//      }
+//      out.println("</select></td></tr>");
+      
+      out.printf("<tr><th>내용</th>"
+              + " <td><textarea name='content' style='height:200px; width:400px;'>%s</textarea></td></tr>\n", board.getContent());
     out.println("</select></td></tr>");
       out.printf("<tr><th>작성자</th> <td>%s</td></tr>\n", board.getWriter().getName());
       out.printf("<tr><th>조회수</th> <td>%s</td></tr>\n", board.getViewCount());

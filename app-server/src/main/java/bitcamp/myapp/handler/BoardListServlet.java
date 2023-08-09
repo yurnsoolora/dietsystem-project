@@ -32,9 +32,9 @@ public class BoardListServlet extends HttpServlet {
     out.println("<title>게시글</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시글 목록</h1>");
+    out.println("<h1>식단관리</h1>");
     out.println("<div style='margin:5px;'>");
-    out.printf("<a href='/diet/form.html'>새 글</a>\n");
+    out.printf("<a href='/diet/form.html'>추가</a>\n"); //새글 작성하는 부분!!!!!!!!!!!!!!
     out.println("</div>");
     out.println("<table border='1'>");
     out.println("<thead>");
@@ -61,12 +61,13 @@ public class BoardListServlet extends HttpServlet {
           + " <td>%s</td>"
           + " <td>%s</td>"
           + " <td>%s</td>"
+          + " <td>%s</td>"
           + " <td>%s</td></tr>\n",
           board.getNo(),
           board.getNo(),
           mealText,
-//          (board.getTitle().length() > 0 ? board.getTitle() : "제목없음"),
           board.getDiet().getFood(),
+//          (board.getTitle().length() > 0 ? board.getTitle() : "제목없음"),
           board.getWriter().getName(),
           board.getViewCount(),
           dateFormatter.format(board.getCreatedDate())

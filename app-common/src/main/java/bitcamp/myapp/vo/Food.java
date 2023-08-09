@@ -7,14 +7,15 @@ public class Food implements Serializable {
 	
     private static final long serialVersionUID = 1L;
 
-	private int no;
+	private int foodNo;
 	private String food;
 	private int calories;
 	
 	@Override
 	  public int hashCode() {
-	    return Objects.hash(no);
+	    return Objects.hash(foodNo);
 	  }
+	
 	  @Override
 	  public boolean equals(Object obj) {
 	    if (this == obj)
@@ -24,25 +25,26 @@ public class Food implements Serializable {
 	    if (getClass() != obj.getClass())
 	      return false;
 	    Food other = (Food) obj;
-	    return no == other.no;
+	    return foodNo == other.foodNo;
 	  }
-	public int getNo() {
-		return no;
+	  
+	  public Food(int foodNo, String food, int calories) {
+	        this.foodNo = foodNo;
+	        this.food = food;
+	        this.calories = calories;
+	    }
+
+	    public int getFoodNo() {
+	        return foodNo;
+	    }
+
+	    public String getFood() {
+	        return food;
+	    }
+
+	    public int getCalories() {
+	        return calories;
+	    }
 	}
-	public void setNo(int no) {
-		this.no = no;
-	}
-	public String getFood() {
-		return food;
-	}
-	public void setFood(String food) {
-		this.food = food;
-	}
-	public int getCalories() {
-		return calories;
-	}
-	public void setCalories(int calories) {
-		this.calories = calories;
-	}
+
 	
-}

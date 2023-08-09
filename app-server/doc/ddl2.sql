@@ -1,7 +1,8 @@
 create table myapp_board(
   board_no int not null,
   meal char(1) not null,
-  diet int not null,
+  food_no int not null,
+  content text null,
   writer int not null,
   password varchar(100) null,
   view_count int default 0,
@@ -49,5 +50,5 @@ alter table myapp_food
   
 ALTER TABLE myapp_board
 ADD CONSTRAINT myapp_board_food_fk
-FOREIGN KEY (diet) REFERENCES myapp_food (food_no);
+FOREIGN KEY (food_no) REFERENCES myapp_food (food_no);
 
